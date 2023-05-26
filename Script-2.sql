@@ -11,7 +11,7 @@ SELECT alias FROM musicians
 WHERE NOT alias LIKE '% %';
 
 SELECT name_track FROM tracks
-WHERE name_track LIKE 'мой' OR name_track LIKE 'my';
+WHERE string_to_array(lower(name_track), ' ') && ARRAY['мой', 'my'];
 
 SELECT COUNT(*) AS quantity_musicians, id_style_music FROM styles_musicians
 GROUP BY id_style_music
@@ -25,10 +25,12 @@ SELECT AVG(duration), album FROM tracks
 GROUP BY album
 ORDER BY album;
 
-SELECT m.alias FROM albums_musicians am
-LEFT JOIN musicians m ON am.id_musician = m.id
-LEFT JOIN albums a ON am.id_album = a.id
-WHERE a.release_yaer != 2020;
+SELECT alias FROM musicians
+WHERE alias NOT IN(
+	SELECT m.alias FROM albums_musicians am
+	LEFT JOIN musicians m ON am.id_musician = m.id
+	LEFT JOIN albums a ON am.id_album = a.id
+	WHERE a.release_yaer = 2020);
 
 SELECT name_collection FROM albums_musicians am
 LEFT JOIN musicians m ON am.id_musician = m.id
