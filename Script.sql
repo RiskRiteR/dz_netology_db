@@ -10,7 +10,8 @@ create table if not exists musicians (
 
 create table if not exists albums (
 	id SERIAL primary key,
-	name_album VARCHAR(50) unique not null
+	name_album VARCHAR(50) unique not NULL,
+	release_yaer INT not null
 );
 
 create table if not exists tracks (
